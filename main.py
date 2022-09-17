@@ -2,7 +2,7 @@ import util.file as fileUtil
 import util.network as networkUtil
 import threading
 import socket
-BASE_PATH="D://"
+BASE_PATH="D://1000"
 
 if __name__=="__main__":
 
@@ -10,4 +10,4 @@ if __name__=="__main__":
     th.start()
     th1 = threading.Thread(target=networkUtil.startFileTCPTransferServer, args=(BASE_PATH, "0.0.0.0", 9091))#TCP传输文件进程
     th1.start()
-    networkUtil.startFileUDPTransferServer(BASE_PATH, 9092)#UDP传输我呢见进程
+    networkUtil.startFileUDPTransferServer(BASE_PATH, "0.0.0.0",9092)#UDP传输文件进程
