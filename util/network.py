@@ -36,13 +36,24 @@ def __fileTCPTransfer(client,path:str):
 
     fileName=client.recv(4096)
     path=path+"\\"+fileName.decode("utf-8")
-    print(path)
-    file=open(path,'rb')
 
+    print(path)
+    try:
+
+        file=open(path,'rb')
+    except:#文件不存在则关闭连接
+        sendData={'ok':False}
+        sendData=str(sendData).encode('utf-8')
+        client.send(sendData)
+        client.close()
+        return
+    sendData = {'ok': True}
+    sendData = str(sendData).encode('utf-8')
+    print(sendData)
+    client.send(sendData)
     data=file.read(1024)
     while data:
         client.send(data)
-        print('12')
         data=file.read(1024)
     file.close()
     client.close()
@@ -64,10 +75,13 @@ def startFileUDPTransferServer(path:str,ip:str,port:int):
             else:
                 sendData = {'id': data['id'], 'fileData': fileData, 'end': False,
                             'ok': True}  # 封装响应信息，包含数据偏移量、文件字节数据、文件是否结束，并转化为bytes类型
+            __addMd5ToDict(sendData)  # 给sendData字典加上他对应的md5值
             sendData = str(sendData).encode('utf-8')
+
             server.sendto(sendData, addr)
         except:
             sendData = {'id': 0, 'fileData': b'', 'end': False, 'ok': False}
+            __addMd5ToDict(sendData)  # 给sendData字典加上他对应的md5值
             server.sendto(str(sendData).encode('utf-8'), addr)
 
 
@@ -109,3 +123,6 @@ def __fileUDPTransfer(server, basePath: str):#不用了
         #file = open(path, 'rb')
 
     
+def __addMd5ToDict(ob:dict):#在字典对象中加入md5值的属性
+    md5=hashlib.md5(str(ob).encode('utf-8')).hexdigest()
+    ob['md5']=md5
