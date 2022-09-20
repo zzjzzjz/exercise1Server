@@ -1,3 +1,5 @@
+import os
+
 import util.file as fileUtil
 import socket
 import json
@@ -20,11 +22,11 @@ def startFileDirectoryServer(path:str,ip:str,port:int):
 
 
 def __fileDirectory(client,files:list):
-    client.send(json.dumps(files).encode('utf-8'))
+    client.send(str(files).encode('utf-8'))
     client.close()
 def startFileTCPTransferServer(path:str,ip:str,port:int):
     server=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    server.bind((ip,9091))
+    server.bind((ip,port))
     server.listen(10)
 
     while True:
@@ -35,26 +37,28 @@ def startFileTCPTransferServer(path:str,ip:str,port:int):
 def __fileTCPTransfer(client,path:str):
 
     fileName=client.recv(4096)
-    path=path+"\\"+fileName.decode("utf-8")
+    path=path+"/"+fileName.decode("utf-8")
 
     print(path)
     try:
 
         file=open(path,'rb')
+        fileSize=os.stat(path).st_size
+        print(fileSize)
     except:#文件不存在则关闭连接
         sendData={'ok':False}
         sendData=str(sendData).encode('utf-8')
         client.send(sendData)
         client.close()
         return
-    sendData = {'ok': True}
+    sendData = {'ok': True,'fileSize':fileSize}
     sendData = str(sendData).encode('utf-8')
     print(sendData)
     client.send(sendData)
-    data=file.read(1024)
+    data=file.read(1024*5)
     while data:
         client.send(data)
-        data=file.read(1024)
+        data=file.read(1024*5)
     file.close()
     client.close()
 
@@ -67,13 +71,16 @@ def startFileUDPTransferServer(path:str,ip:str,port:int):
         data = eval(data.decode('utf-8'))  # 将接受信息转化为字典类型，{'fileName':x,'id':x}包括请求文件名以及偏移量。
         try:
             file = open(path + '\\' + data['fileName'], 'rb')  # 打开文件
+            print("大小:"+str(os.stat(path + '\\' + data['fileName']).st_size))
+            print("偏移量:"+str(UDP_SEND_DATA_SIZE * data['id']))
             file.seek(UDP_SEND_DATA_SIZE * data['id'])  # 请求文件偏移量
             fileData = file.read(UDP_SEND_DATA_SIZE)  # 读取数据
             file.close()
             if not fileData:  # 文件读取已结束
-                sendData = {'id': data['id'], 'fileData': fileData, 'end': True, 'ok': True}  # ok代表是否成功读取文件数据
+                sendData = {'id': data['id'], 'fileData': fileData, 'end': True, 'ok': True,'per':100}  # ok代表是否成功读取文件数据
             else:
-                sendData = {'id': data['id'], 'fileData': fileData, 'end': False,
+                per=int((UDP_SEND_DATA_SIZE * data['id']/os.stat(path + '\\' + data['fileName']).st_size)*100)#进度
+                sendData = {'id': data['id'], 'fileData': fileData, 'end': False,'per':per,
                             'ok': True}  # 封装响应信息，包含数据偏移量、文件字节数据、文件是否结束，并转化为bytes类型
             __addMd5ToDict(sendData)  # 给sendData字典加上他对应的md5值
             sendData = str(sendData).encode('utf-8')

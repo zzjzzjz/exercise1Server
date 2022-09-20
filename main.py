@@ -2,7 +2,7 @@ import util.file as fileUtil
 import util.network as networkUtil
 import threading
 import socket
-BASE_PATH="D://1000"
+BASE_PATH="E:/test"
 
 if __name__=="__main__":
 
