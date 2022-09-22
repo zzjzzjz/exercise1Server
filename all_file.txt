@@ -1,42 +1,7 @@
-root:[D://作业//网络攻击与防御]
-+--实验1
-| +--Environment_Variable_and_SetUID.pdf
-| +--Labsetup.zip
-| +--实验1 实验指导.docx
-| +--实验1 报告模板.docx
-+--实验2
-| +--Buffer_Overflow_Setuid.pdf
-| +--Labsetup.zip
-| +--实验2 实验指导(18级).docx
-| +--实验2 报告模板.docx
-+--实验3
-| +--Labsetup.zip
-| +--Race_Condition.pdf
-| +--实验3 实验指导(18级).docx
-| +--实验3 报告模板.docx
-+--实验4
-| +--Web_CSRF_Elgg.pdf
-| +--实验4 实验指导(18级).docx
-| +--实验4 报告模板.docx
-+--实验5
-| +--Web_SQL_Injection.pdf
-| +--实验5 实验指导(18级).docx
-| +--实验5 报告模板.docx
-+--实验6
-| +--Sniffing_Spoofing.pdf
-| +--实验6 实验指导(18级).docx
-| +--实验6 报告模板.docx
-+--课件
-| +--01_SetUID.pptx
-| +--02_Environment_Variables.pptx
-| +--04_Buffer_Overflow.pptx
-| +--07_Race_Condition.pptx
-| +--10_Web_CSRF.pptx
-| +--12_Web_SQL_Injection.pptx
-| +--15_Packet_Sniffing_Spoofing.pptx
-| +--第零章 课程介绍.pptx
-+--课程报告
-| +--(网络攻击与防御)课程报告封面和考核表.doc
-| +--网络攻击与防御期末课程报告任务书.doc
-| +--范文：黄凌小组专业实训2.pdf
-| +--评分标准.doc
+root:[D:\OneDrive - bestpigs\Videos\录屏]
++--7  第七期-酸石榴叔叔声音练习干货.mp4
++--8  第八期-零基础视频剪辑课.mp4
++--9  第九期-改变观念的说服课（黄执中）.mp4
++--bandicam 2022-09-09 23-04-04-359.mp4
++--idm破解.mp4
++--时间管理入门.mp4
