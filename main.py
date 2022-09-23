@@ -12,4 +12,6 @@ if __name__ == "__main__":
     th1 = threading.Thread(target=networkUtil.startFileTCPTransferServer,
                            args=(BASE_PATH, DEST_IP, 9091))  # TCP传输文件进程
     th1.start()
-    networkUtil.startFileUDPTransferServer(BASE_PATH, DEST_IP, 9092)  # UDP传输文件进程
+    th2 = threading.Thread(target=networkUtil.startFileUDPTransferServer,args=(BASE_PATH, DEST_IP, 9092))
+    # networkUtil.startFileUDPTransferServer(BASE_PATH, DEST_IP, 9092)  # UDP传输文件进程
+    th2.start()
